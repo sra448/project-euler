@@ -102,6 +102,27 @@ number_of_ways_new_line last_line = foldl calculate_values [] last_line
                                     where
                                       calculate_values lst x = lst ++ [(if length lst > 0 then (last lst) + x else head last_line)]
 
-count_ways x = foldl (\ lst _ -> number_of_ways_new_line (trace (show lst) lst)) (take x [1,1..]) [1..x-1]
+count_ways x = foldl (\ lst _ -> number_of_ways_new_line lst) (take x [1,1..]) [1..x-1]
 
 result_15 = last $ count_ways 21
+
+lattice :: Int -> Int -> Int
+lattice 0 0 = 1
+lattice x 0 = lattice (x-1) 0
+lattice 0 y = lattice (y-1) 0
+lattice x y
+  | x >= y    = (lattice (x-1) y) + (lattice x (y-1))
+  | otherwise = (lattice y (x-1)) + (lattice (y-1) x)
+
+
+
+-- 16: Power digit sum
+list_digits x
+  | x >= 10   = (list_digits (x `div` 10)) ++ [(x `mod` 10)]
+  | otherwise = [x]
+
+result_16 = sum $ list_digits $ floor $ fromIntegral 2**1000
+
+-- 17: Number letter counts
+numbers_to_19 = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "sixteen", "eighteen", "nineteen"]
+numbers_20_100 = ["zero", "ten", "twenty", "thirty", "forthy", "fifty", "sixty", "seventy", "eighty", "ninety", "hundred"]
